@@ -1,21 +1,22 @@
+<?php include ( "./inc/connect.inc.php"); ?>
 <!DOCTYPE html>
 <html>
-	<head>
-		<title></title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<link rel="stylesheet" href="style.css">
-	</head>
+  <head>
+    <title>Kaleydoskop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
   <body>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-	
+  
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
- 	<div class="" id="status">
- 		
- 	</div>
+  <div class="" id="status">
+    
+  </div>
 
       <div  class="container">
         <div  class="navbar-header">
@@ -28,23 +29,44 @@
           <a class="navbar-brand" href="#">Kaleydeskop</a>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
+
+
+<?php
+              // USER LOGIN
+  if (isset($_POST["email_login"]) && isset($_POST["password_login"])) {
+    $email_login = preg_replace("#[a-zA-Z0-9ğüşiöç]#i", '', $_POST["email_login"]); //burdaki harfler dışındakiler filteli
+    $password_login = preg_replace("#[a-zA-Z0-9ğüşiçö]#i", '', $_POST["password_login"]);
+    $password_login_md5 = md5($password_login);
+  $sql = mysql_query("SELECT id FROM accounts WHERE email='$email_login' AND password='$password_login_md5' LIMIT 1");
+    $userCount = mysql_num_rows($sql);
+    if ($userCount == 1) {
+      while ($row = mysql_fetch_array($sql)) {
+        $id = $row["id"];
+       }
+        $_SESSION["email_login"] = $email_login;
+        //$_SESSION["password_login"] = $password_login;
+        header("location: home.php");
+        exit();
+      }
+            else {
+        echo 'Lütfen doğru email/şifre giriniz!';
+        exit();
+       }
+    }
+?>
+          <form action="index.php" method="POST" class="navbar-form navbar-right">
             <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
+              <input type="text" name="email_login" placeholder="Email" class="form-control">
             </div>
             <div class="form-group">
-              <input type="password" placeholder="Şifre" class="form-control">
+              <input type="password" name="password_login" placeholder="Şifre" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">Giriş</button>
+            <input type="submit" name="login" value="Giriş" class="btn btn-primary">
           </form>
-        </div><!--/.navbar-collapse -->
+            </div><!--/.navbar-collapse -->
       </div>
     </div>
     
-    
-
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
 
     <div class="jumbotron" >
     
@@ -56,15 +78,16 @@
 
 
         <div class="row">
-        <p class="col-md-6">Binlerce Kaleydoscope kullanıcısıyla kitaplarını paylaş. Onların da sana verecek kitabı vardır.</p>
+        <p class="col-md-6">Yüzlerce Kaleydoscope kullanıcısıyla kitaplarını paylaş. Onların da sana verecek kitabı vardır.</p>
         <p class="col-md-1"></p>
         <div class="container col-md-5">
+          <!--/ REGISTER -->
       		<form id="kayitol" class="form-signin pull-right" role="form">
       	 	 <h2 class="form-signin-heading">Bize Katıl</h2>
-      		 <input type="name" name="name" class="form-control" placeholder="Adınız" required autofocus>
-     		   <input type="surname" name="surname"  class="form-control" placeholder="Soyadınız" required>
-           <input type="email" name="email" class="form-control" placeholder="Email" required>
-           <input type="password" name="password" class="form-control" placeholder="Şifre" required>
+      		 <input type="name" name="name" class="form-control" size="25" placeholder="Adınız" required autofocus>
+     		   <input type="surname" name="surname"  class="form-control" size="25" placeholder="Soyadınız" required>
+           <input type="email" name="email" class="form-control" size="25" placeholder="Email" required>
+           <input type="password" name="password" class="form-control" size="25" placeholder="Şifre" required>
       	 	 <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit">Kaydol</button>
    		   </form>
    		    <script type="text/javascript">
@@ -109,9 +132,7 @@
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
       </div>
-
-      <hr>
-
+        <hr>
       <footer>
         <p>&copy; Company 2014</p>
       </footer>
