@@ -1,4 +1,4 @@
-<?php include("dbsettings.php");
+<?php include("inc/connect.inc.php");
 class ajaxValidate {
  
         function formValidate() {

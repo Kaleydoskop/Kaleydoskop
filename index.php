@@ -1,4 +1,4 @@
-<?php include ( "./inc/connect.inc.php"); ?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -31,7 +31,7 @@
         <div class="navbar-collapse collapse">
 
 
-<?php
+<?php include ( "./inc/connect.inc.php");
               // USER LOGIN
   if (isset($_POST["email_login"]) && isset($_POST["password_login"])) {
     $email_login = preg_replace("#[a-zA-Z0-9ğüşiöç]#i", '', $_POST["email_login"]); //burdaki harfler dışındakiler filteli
@@ -44,7 +44,7 @@
         $id = $row["id"];
        }
         $_SESSION["email_login"] = $email_login;
-        //$_SESSION["password_login"] = $password_login;
+        $_SESSION["password_login"] = $password_login;
         header("location: home.php");
         exit();
       }
